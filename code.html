@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth dark" lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="web_standard" name="shell-type"/>
+<title>LinguaViva — Ecossistema Acessível de Idiomas &amp; Libras</title>
+<!-- Tipografia Editorial: Inter & Plus Jakarta Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS CDN com suporte à classe dark -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface-container": "#eaedff",
+            "on-surface-variant": "#4a4452",
+            "error": "#ba1a1a",
+            "surface-card": "#FFFFFF",
+            "on-error": "#ffffff",
+            "on-primary-fixed-variant": "#572ba0",
+            "on-secondary-fixed-variant": "#005049",
+            "primary": "#340075",
+            "border-subtle": "#E2E8F0",
+            "secondary-fixed": "#89f5e7",
+            "surface": "#faf8ff",
+            "accent-coral": "#E11D48",
+            "outline-variant": "#ccc3d4",
+            "on-tertiary-container": "#9b9eff",
+            "accent-emerald": "#059669",
+            "on-secondary-fixed": "#00201d",
+            "on-tertiary-fixed-variant": "#2f2ebe",
+            "inverse-primary": "#d3bbff",
+            "secondary-container": "#86f2e4",
+            "secondary": "#006a61",
+            "tertiary-container": "#221eb5",
+            "on-tertiary": "#ffffff",
+            "primary-fixed-dim": "#d3bbff",
+            "secondary-fixed-dim": "#6bd8cb",
+            "primary-container": "#4c1d95",
+            "primary-fixed": "#ebdcff",
+            "on-primary-container": "#b994ff",
+            "on-error-container": "#93000a",
+            "surface-container-lowest": "#ffffff",
+            "tertiary-fixed-dim": "#c0c1ff",
+            "on-secondary-container": "#006f66",
+            "border-hover": "#CBD5E1",
+            "text-muted": "#64748B",
+            "tertiary-fixed": "#e1e0ff",
+            "focus-ring": "#7C3AED",
+            "on-background": "#131b2e",
+            "surface-container-high": "#e2e7ff",
+            "inverse-on-surface": "#eef0ff",
+            "on-secondary": "#ffffff",
+            "outline": "#7b7483",
+            "surface-bright": "#faf8ff",
+            "surface-variant": "#dae2fd",
+            "on-tertiary-fixed": "#07006c",
+            "background": "#faf8ff",
+            "error-container": "#ffdad6",
+            "surface-canvas": "#F8FAFC",
+            "surface-tint": "#6f46b9",
+            "tertiary": "#0c008e",
+            "surface-container-low": "#f2f3ff",
+            "on-primary-fixed": "#260059",
+            "surface-dim": "#d2d9f4",
+            "surface-subtle": "#F1F5F9",
+            "surface-container-highest": "#dae2fd",
+            "inverse-surface": "#283044",
+            "on-surface": "#131b2e",
+            "on-primary": "#ffffff",
+            // Cores específicas Dark Mode LinguaViva (Original Andrei Vicente / NewLBA vibe)
+            "dark-bg": "#090d16",
+            "dark-card": "#0f1629",
+            "dark-card-inner": "#151e36",
+            "dark-border": "#1e293b",
+            "dark-border-glow": "#7c3aed40",
+            "dark-text": "#f1f5f9",
+            "dark-muted": "#94a3b8"
+          },
+          borderRadius: {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "2xl": "1rem",
+            "full": "9999px"
+          },
+          fontFamily: {
+            "body-md": ["Inter", "sans-serif"],
+            "headline-lg": ["Plus Jakarta Sans", "sans-serif"],
+            "display": ["Plus Jakarta Sans", "sans-serif"]
+          }
+        }
+      }
+    };
+  </script>
+<style>
+    /* Transições globais suaves ao alternar entre Dark e Light ("Branco") */
+    html {
+      transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease;
+    }
+    body {
+      transition: background-color 0.4s ease, color 0.4s ease;
+    }
+
+    /* Scroll reveal minimalista inspirado em Labelbox */
+    .reveal-on-scroll {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: opacity, transform;
+    }
+    .reveal-on-scroll.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    /* =========================================================================
+       BALÕES & CARDS EXPANSÍVEIS ULTRA-FLUIDOS (BEZIER CUSTOMIZADO CUBIC-BEZIER)
+       ========================================================================= */
+    .course-drawer {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: grid-template-rows;
+    }
+    .course-card.expanded .course-drawer {
+      grid-template-rows: 1fr;
+    }
+    .course-drawer-inner {
+      overflow: hidden;
+    }
+
+    /* Animação escalonada (stagger) dos itens dentro do balão expansível */
+    .course-drawer-inner .drawer-item {
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1), transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+      transition-delay: 0ms;
+    }
+    .course-card.expanded .course-drawer-inner .drawer-item:nth-child(1) {
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: 110ms;
+    }
+    .course-card.expanded .course-drawer-inner .drawer-item:nth-child(2) {
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: 200ms;
+    }
+    .course-card.expanded .course-drawer-inner .drawer-item:nth-child(3) {
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: 290ms;
+    }
+
+    /* Micro-interação de rotação elástica suave do ícone da seta */
+    .card-toggle-icon {
+      transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    /* Borda aura luminosa e elevação nos cards no Dark e Light */
+    .course-card-interactive {
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+                  box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+                  border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .course-card-interactive:hover {
+      transform: translateY(-5px);
+    }
+    html.dark .course-card-interactive:hover {
+      box-shadow: 0 16px 38px -10px rgba(124, 58, 237, 0.22), 0 0 0 1px rgba(167, 139, 250, 0.3);
+      border-color: rgba(167, 139, 250, 0.45);
+    }
+    html:not(.dark) .course-card-interactive:hover {
+      box-shadow: 0 16px 36px -10px rgba(52, 0, 117, 0.12), 0 4px 12px -2px rgba(15, 23, 42, 0.04);
+      border-color: rgba(76, 29, 149, 0.35);
+    }
+
+    .card-img-zoom {
+      transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: transform;
+    }
+    .course-card-interactive:hover .card-img-zoom {
+      transform: scale(1.04);
+    }
+
+    /* Chips magnéticos e balões com efeito visual de reação */
+    .chip-interactive {
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s, border-color 0.2s;
+    }
+    .chip-interactive:hover {
+      transform: translateY(-2px) scale(1.03);
+    }
+
+    /* Efeito de brilho em botões primários inspirado na Labelbox */
+    .btn-shine {
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-shine::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -60%;
+      width: 40%;
+      height: 200%;
+      background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transform: rotate(30deg);
+      transition: all 0.75s ease;
+      pointer-events: none;
+    }
+    .btn-shine:hover::after {
+      left: 130%;
+    }
+
+    /* Custom scrollbar adaptável */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    html.dark ::-webkit-scrollbar-track {
+      background: #090d16;
+    }
+    html.dark ::-webkit-scrollbar-thumb {
+      background: #1e293b;
+      border-radius: 4px;
+    }
+    html:not(.dark) ::-webkit-scrollbar-track {
+      background: #F8FAFC;
+    }
+    html:not(.dark) ::-webkit-scrollbar-thumb {
+      background: #CBD5E1;
+      border-radius: 4px;
+    }
+
+    /* Suporte WCAG a Movimento Reduzido */
+    @media (prefers-reduced-motion: reduce) {
+      *, ::before, ::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+      .course-card-interactive:hover,
+      .card-img-zoom,
+      .chip-interactive:hover {
+        transform: none !important;
+      }
+      .course-drawer {
+        transition: none !important;
+      }
+      .course-drawer-inner .drawer-item {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+    }
+  </style>
+</head>
+<body class="bg-surface-canvas text-on-surface dark:bg-[#090d16] dark:text-[#f1f5f9] font-body-md antialiased selection:bg-primary-fixed selection:text-primary transition-colors duration-400">
+<!-- =========================================================================================
+       HEADER NAVEGAÇÃO COM THEME SWITCHER (DARK / BRANCO) & CALL TO ACTION
+       ========================================================================================= -->
+<header class="fixed top-0 left-0 right-0 w-full z-50 bg-white/85 dark:bg-[#090d16]/85 backdrop-blur-md border-b border-border-subtle/80 dark:border-[#1e293b] transition-all duration-300">
+<div class="h-16 max-w-[1240px] mx-auto px-6 flex items-center justify-between gap-4">
+<!-- Logotipo & Selo Acessibilidade Libras -->
+<div class="flex items-center gap-4 sm:gap-6">
+<a aria-label="LinguaViva Home" class="flex items-center gap-2 group transition-transform duration-200 hover:scale-[1.02]" href="#">
+<span class="font-display font-extrabold text-xl tracking-tight text-primary dark:text-[#c084fc] transition-colors">LinguaViva</span>
+<span class="chip-interactive inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-secondary-container/60 dark:bg-[#064e3b]/50 text-secondary dark:text-[#34d399] font-medium text-xs border border-secondary/15 dark:border-[#059669]/40 shadow-sm">
+<span class="material-symbols-outlined text-[13px]">accessibility_new</span>Libras+
+          </span>
+</a>
+</div>
+<!-- Links de Navegação Estruturados -->
+<nav class="hidden md:flex items-center gap-1 text-sm font-medium text-text-muted dark:text-slate-400">
+<a class="px-3 py-1.5 rounded-lg hover:text-on-surface dark:hover:text-white hover:bg-surface-subtle dark:hover:bg-[#1e293b]/70 transition-all duration-200" href="#cursos">Cursos</a>
+<a class="px-3 py-1.5 rounded-lg hover:text-on-surface dark:hover:text-white hover:bg-surface-subtle dark:hover:bg-[#1e293b]/70 transition-all duration-200" href="#experiencia">Metodologia</a>
+<a class="px-3 py-1.5 rounded-lg hover:text-on-surface dark:hover:text-white hover:bg-surface-subtle dark:hover:bg-[#1e293b]/70 transition-all duration-200" href="#modalidades">Modalidades</a>
+<a class="px-3 py-1.5 rounded-lg hover:text-on-surface dark:hover:text-white hover:bg-surface-subtle dark:hover:bg-[#1e293b]/70 transition-all duration-200" href="#planos">Planos</a>
+<a class="px-3 py-1.5 rounded-lg hover:text-on-surface dark:hover:text-white hover:bg-surface-subtle dark:hover:bg-[#1e293b]/70 transition-all duration-200" href="#duvidas">Dúvidas</a>
+</nav>
+<!-- Grupo de Ações: Theme Switcher ("Dark" / "Branco") + Botão Conversão -->
+<div class="flex items-center gap-2.5 sm:gap-3">
+<!-- THEME SWITCHER POLIDO (DARK MODE <-> BRANCO/LIGHT MODE) -->
+<button aria-label="Alternar tema de cores" class="relative flex items-center justify-center p-2 rounded-xl border border-border-subtle dark:border-[#334155] bg-surface-subtle dark:bg-[#151e36] text-text-muted dark:text-amber-300 hover:text-on-surface dark:hover:text-amber-200 hover:bg-white dark:hover:bg-[#1e293b] shadow-sm transition-all duration-300 hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-focus-ring" id="theme-toggle-btn" onclick="toggleThemeMode()" title="Alternar entre modo Escuro e Branco" type="button">
+<!-- Ícone do Sol (visível no Dark Mode para alternar para Claro/Branco) -->
+<span class="material-symbols-outlined text-[19px] hidden dark:inline-block transition-transform duration-300 rotate-0 dark:rotate-90">light_mode</span>
+<!-- Ícone da Lua (visível no Light Mode para alternar para Dark Mode) -->
+<span class="material-symbols-outlined text-[19px] inline-block dark:hidden text-slate-700 transition-transform duration-300 rotate-0">dark_mode</span>
+<span class="hidden sm:inline-block text-xs font-semibold ml-1.5 text-on-surface dark:text-slate-200">
+<span class="hidden dark:inline">Branco</span>
+<span class="inline dark:hidden">Escuro</span>
+</span>
+</button>
+<!-- Botão Único de Conversão -->
+<a class="btn-shine group inline-flex items-center justify-center h-9 px-4 rounded-lg bg-primary dark:bg-[#6d28d9] text-white text-xs font-semibold tracking-wide hover:bg-primary-container dark:hover:bg-[#5b21b6] transition-all duration-200 shadow-sm hover:shadow-md hover:shadow-primary/25 hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-focus-ring focus:ring-offset-1" href="#cadastro">
+<span>Inscreva-se</span>
+<span class="material-symbols-outlined ml-1.5 text-[15px] transition-transform duration-200 group-hover:translate-x-1">arrow_forward</span>
+</a>
+</div>
+</div>
+</header>
+<main class="w-full pt-16">
+<!-- =========================================================================================
+         HERO SECTION: MINIMALISTA ESTILO LABELBOX COM TEXTOS E MÉTRICAS ORIGINAIS
+         ========================================================================================= -->
+<section class="relative w-full max-w-[1240px] mx-auto px-6 pt-16 pb-20 overflow-hidden">
+<!-- Glow sutil de fundo no Dark Mode -->
+<div class="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 w-[600px] h-[340px] bg-gradient-to-tr from-purple-600/15 via-teal-500/10 to-transparent blur-3xl opacity-0 dark:opacity-100 transition-opacity duration-700"></div>
+<div class="flex flex-col items-center text-center max-w-3xl mx-auto relative z-10 reveal-on-scroll is-visible">
+<!-- Badge minimalista com microinteração de hover magnético -->
+<div class="chip-interactive inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-surface-subtle dark:bg-[#151e36] border border-border-subtle dark:border-[#334155] text-text-muted dark:text-slate-300 text-xs font-medium mb-6 transition-all duration-200 hover:border-border-hover dark:hover:border-purple-400/40 shadow-sm">
+<span class="w-2 h-2 rounded-full bg-accent-emerald animate-pulse"></span>
+<span>Metodologia Bilíngue &amp; Acessível (WCAG AAA)</span>
+</div>
+<!-- Título Principal com Tipografia Editorial -->
+<h1 class="font-display font-extrabold text-4xl sm:text-5xl lg:text-6xl text-on-surface dark:text-white tracking-tight leading-[1.15] mb-6">
+          Aprenda sem limites.<br/>
+<span class="text-transparent bg-clip-text bg-gradient-to-r from-primary via-primary-container to-secondary dark:from-[#c084fc] dark:via-[#a855f7] dark:to-[#2dd4bf]">
+            Comunique-se em qualquer língua.
+          </span>
+</h1>
+<!-- Subtítulo Enxuto -->
+<p class="text-lg text-text-muted dark:text-slate-300 max-w-2xl font-normal leading-relaxed mb-8">
+          O primeiro ecossistema acadêmico integrado de Libras, Espanhol e Inglês. Didática ativa, certificação reconhecida e fluência real em um ambiente acolhedor para alunos e docentes.
+        </p>
+<!-- Chamada Única e Direta com Microinterações de Hover -->
+<div class="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto mb-10">
+<a class="btn-shine group w-full sm:w-auto inline-flex items-center justify-center h-12 px-7 rounded-xl bg-primary dark:bg-[#7c3aed] text-white text-sm font-semibold hover:bg-primary-container dark:hover:bg-[#6d28d9] transition-all duration-200 shadow-sm shadow-primary/20 hover:shadow-lg hover:shadow-primary/30 hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-focus-ring focus:ring-offset-2" href="#cadastro">
+<span>Começar Agora</span>
+<span class="material-symbols-outlined ml-2 text-[18px] transition-transform duration-200 group-hover:translate-x-1.5">east</span>
+</a>
+<a class="w-full sm:w-auto inline-flex items-center justify-center h-12 px-6 rounded-xl bg-surface-card dark:bg-[#151e36] text-on-surface dark:text-slate-200 text-sm font-medium border border-border-subtle dark:border-[#334155] hover:border-border-hover dark:hover:border-slate-500 hover:bg-surface-subtle dark:hover:bg-[#1e293b] transition-all duration-200 hover:-translate-y-0.5 shadow-sm" href="#cursos">
+            Explorar Cursos
+          </a>
+</div>
+<!-- Micro-métricas discretas em linha -->
+<div class="hero-inline-stats flex flex-wrap items-center justify-center gap-y-2 gap-x-6 text-xs text-text-muted dark:text-slate-400 font-medium pt-2 border-t border-border-subtle/60 dark:border-[#1e293b] w-full max-w-xl">
+<div class="flex items-center gap-1.5 transition-colors duration-200 hover:text-on-surface dark:hover:text-white">
+<span class="font-bold text-on-surface dark:text-white text-sm">15.000+</span> alunos formados
+          </div>
+<span class="hidden sm:inline text-border-hover dark:text-slate-700">•</span>
+<div class="flex items-center gap-1.5 transition-colors duration-200 hover:text-on-surface dark:hover:text-white">
+<span class="font-bold text-on-surface dark:text-white text-sm">480+</span> docentes certificados
+          </div>
+<span class="hidden sm:inline text-border-hover dark:text-slate-700">•</span>
+<div class="flex items-center gap-1.5 transition-colors duration-200 hover:text-secondary dark:hover:text-teal-300">
+<span class="font-bold text-secondary dark:text-teal-400 text-sm">98.6%</span> índice de fluência
+          </div>
+</div>
+</div>
+<!-- Banner Fotográfico Sofisticado Estilo Labelbox -->
+<div class="mt-12 relative w-full rounded-2xl border border-border-subtle dark:border-[#1e293b] bg-surface-card dark:bg-[#0f1629] p-2 sm:p-3 shadow-xl dark:shadow-2xl dark:shadow-black/70 reveal-on-scroll is-visible transition-all duration-300 hover:border-border-hover dark:hover:border-[#334155]">
+<div class="relative w-full aspect-[16/9] sm:aspect-[21/9] rounded-xl overflow-hidden bg-slate-900 group">
+<img alt="Estudantes e professores em sala de aula inclusiva praticando Libras e idiomas com expressão natural e acolhedora" class="w-full h-full object-cover object-center opacity-90 transition-transform duration-700 ease-out group-hover:scale-[1.02]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD4K7Yfs2eA-d0XZMamqSyn2Jld4mMA36E5uwmgv1NYOPhovlIyUxGwWPgElMs9w4VJkcVnpg0yE9DHrS5WueB_hMLg8waVeV3sCKyLqXc6qfJZLq6fLjXcIFGYHeb_TBgCGmyio9oVjPof3FxCs4sqST1sCcXl2qOsKik31XIGBg9C6i6cByeQbM_rkCLBU_VzoSlC4j1-Qo_853afLijfadMvxqE-oyHuqPfw9mHoJLzdgqFw_dDs"/>
+<!-- Gradiente de sobreposição editorial sutil -->
+<div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent pointer-events-none"></div>
+<!-- Micro Badge Flutuante no Banner -->
+<div class="absolute bottom-4 left-4 sm:bottom-6 sm:left-6 flex items-center gap-3 bg-white/95 dark:bg-[#0f1629]/90 backdrop-blur-md px-3.5 py-2.5 rounded-xl shadow-md border border-white/20 dark:border-white/10 transition-transform duration-200 hover:scale-[1.02]">
+<div class="w-8 h-8 rounded-lg bg-secondary-container dark:bg-[#064e3b] text-on-secondary-container dark:text-[#34d399] flex items-center justify-center font-bold">
+<span class="material-symbols-outlined text-[18px]">sign_language</span>
+</div>
+<div class="text-left">
+<p class="text-xs font-semibold text-on-surface dark:text-white leading-tight">Libras &amp; Idiomas Integrados</p>
+<p class="text-[11px] text-text-muted dark:text-slate-400">Aulas síncronas em turmas reduzidas de até 8 alunos</p>
+</div>
+</div>
+<!-- Tag de Status de Matrícula -->
+<div class="absolute top-4 right-4 sm:top-6 sm:right-6">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md text-white text-xs font-medium border border-white/10">
+<span class="w-1.5 h-1.5 rounded-full bg-accent-emerald animate-pulse"></span>
+              Turmas Abertas 2025
+            </span>
+</div>
+</div>
+</div>
+</section>
+<!-- =========================================================================================
+         CARDS / BALÕES EXPANSÍVEIS COM ANIMAÇÃO FLUIDA & STAGGER (ESTILO LABELBOX)
+         ========================================================================================= -->
+<section class="w-full py-20 bg-surface-card dark:bg-[#0b101e] border-y border-border-subtle dark:border-[#1e293b]" id="cursos">
+<div class="max-w-[1240px] mx-auto px-6">
+<!-- Cabeçalho de Seção com Filtros -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 reveal-on-scroll is-visible">
+<div>
+<span class="text-xs font-semibold uppercase tracking-wider text-primary dark:text-[#c084fc]">Formações Especializadas</span>
+<h2 class="font-display font-bold text-3xl sm:text-4xl text-on-surface dark:text-white mt-1">Cursos Estruturados</h2>
+<p class="text-sm text-text-muted dark:text-slate-400 mt-2 max-w-xl">
+              Clique em qualquer formação para expandir os módulos programáticos, metodologia ativa e requisitos de certificação oficial.
+            </p>
+</div>
+<!-- Filtro de Tabs Sutil com Feedback Tátil -->
+<div class="flex items-center gap-1 p-1 bg-surface-subtle dark:bg-[#151e36] rounded-xl border border-border-subtle dark:border-[#1e293b] self-start md:self-auto" role="tablist">
+<button class="course-filter-btn active px-3.5 py-1.5 rounded-lg text-xs font-medium bg-white dark:bg-[#1e293b] text-on-surface dark:text-white shadow-sm transition-all duration-200" data-filter="all" onclick="filterCourses('all')">Todos</button>
+<button class="course-filter-btn px-3.5 py-1.5 rounded-lg text-xs font-medium text-text-muted dark:text-slate-400 hover:text-on-surface dark:hover:text-white hover:bg-white/60 dark:hover:bg-[#1e293b]/50 transition-all duration-200" data-filter="libras" onclick="filterCourses('libras')">Libras</button>
+<button class="course-filter-btn px-3.5 py-1.5 rounded-lg text-xs font-medium text-text-muted dark:text-slate-400 hover:text-on-surface dark:hover:text-white hover:bg-white/60 dark:hover:bg-[#1e293b]/50 transition-all duration-200" data-filter="espanhol" onclick="filterCourses('espanhol')">Espanhol</button>
+<button class="course-filter-btn px-3.5 py-1.5 rounded-lg text-xs font-medium text-text-muted dark:text-slate-400 hover:text-on-surface dark:hover:text-white hover:bg-white/60 dark:hover:bg-[#1e293b]/50 transition-all duration-200" data-filter="ingles" onclick="filterCourses('ingles')">Inglês</button>
+</div>
+</div>
+<!-- Grade de Balões / Cards Interativos com Custom Beziers -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-start" id="courses-grid">
+<!-- CARD 1: LIBRAS -->
+<div class="course-card course-card-interactive group bg-white dark:bg-[#0f1629] border border-border-subtle dark:border-[#1e293b] rounded-2xl overflow-hidden reveal-on-scroll is-visible" data-category="libras" id="card-libras">
+<!-- Header Visual do Card -->
+<div class="relative aspect-[16/10] overflow-hidden bg-surface-subtle dark:bg-slate-900">
+<img alt="Professora sinalizando em Libras com expressão clara" class="card-img-zoom w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDM6EmcwSC4qIHKolOsDdJs45lTSwWEzbGwBLMzqGAzBjrFIEGWBQu8OkKKJLRGoxV7KmKSGNwXMTJS2MFhhnbb_2h_72c8_K1pG0t4HcsSqostbIPEzGabsFmUu514qkkkOPMcBIwiP9cldlV4Ryhtt_oplYycs2yrBONj4d79nrb3rAM0cGzX7_YuIb4GrCx2ODNZTfqND9CvOgdhqUFLy04DoFxewDuxKclMmTcsy5cRWrkTZkAf"/>
+<div class="chip-interactive absolute top-3 left-3 flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white/90 dark:bg-[#0f1629]/90 backdrop-blur-md text-primary dark:text-[#c084fc] font-semibold text-xs border border-white/40 dark:border-purple-400/30 shadow-sm">
+<span class="material-symbols-outlined text-[15px]">sign_language</span>
+                Libras
+              </div>
+<div class="absolute bottom-3 right-3 px-2 py-0.5 rounded bg-black/60 backdrop-blur-md text-white text-[11px] font-medium">
+                180 horas
+              </div>
+</div>
+<!-- Corpo Básico do Card (Estado Recolhido) -->
+<div class="p-5">
+<div class="flex items-center justify-between text-xs text-text-muted dark:text-slate-400 mb-2">
+<span>Níveis A1 ao C2</span>
+<span class="text-secondary dark:text-teal-400 font-medium">Turmas Reduzidas</span>
+</div>
+<h3 class="font-display font-bold text-lg text-on-surface dark:text-white mb-2 transition-colors duration-200 group-hover:text-primary dark:group-hover:text-[#c084fc]">Língua Brasileira de Sinais</h3>
+<p class="text-xs text-text-muted dark:text-slate-400 leading-relaxed line-clamp-2">
+                Fluência visual-espacial, estruturas gramaticais próprias e parâmetros manuais com docentes surdos nativos.
+              </p>
+<!-- Botão Interativo de Expansão de Balão -->
+<button aria-expanded="false" class="mt-4 w-full flex items-center justify-between py-2 px-3 rounded-lg bg-surface-subtle dark:bg-[#151e36] hover:bg-surface-container dark:hover:bg-[#1e293b] text-xs font-semibold text-primary dark:text-[#c084fc] border border-transparent dark:border-[#334155]/60 transition-all duration-200 hover:shadow-sm" onclick="toggleCourseCard('card-libras')" type="button">
+<span class="card-toggle-text">Ver detalhes do curso</span>
+<span class="material-symbols-outlined text-[18px] card-toggle-icon">expand_more</span>
+</button>
+</div>
+<!-- Balão / Drawer Expansível com Animação Fluida & Stagger dos Elementos -->
+<div class="course-drawer">
+<div class="course-drawer-inner">
+<div class="px-5 pb-5 pt-2 border-t border-border-subtle/80 dark:border-[#1e293b] bg-surface-subtle/40 dark:bg-[#0c1222] space-y-4 text-xs text-on-surface-variant dark:text-slate-300">
+<!-- Item 1 do Stagger: Conteúdo Programático -->
+<div class="drawer-item">
+<h4 class="font-semibold text-on-surface dark:text-white mb-2 flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-secondary dark:text-teal-400">verified</span>
+                      Conteúdo Programático
+                    </h4>
+<ul class="space-y-1.5 pl-5 list-disc text-text-muted dark:text-slate-400">
+<li>Alfabeto datilológico e configurações de mão</li>
+<li>Classificadores e espaço gramatical visual</li>
+<li>Expressões não manuais e sintaxe espacial</li>
+<li>Tradução simultânea e cultura da comunidade surda</li>
+</ul>
+</div>
+<!-- Item 2 do Stagger: Certificação & Requisitos -->
+<div class="drawer-item p-3 rounded-lg bg-surface-card dark:bg-[#151e36] border border-border-subtle dark:border-[#1e293b] space-y-1">
+<p class="font-semibold text-on-surface dark:text-white">Certificação &amp; Foco:</p>
+<p class="text-text-muted dark:text-slate-400">Preparatório incluso para exame CAS e Prolibras. Reconhecido nacionalmente (Lei nº 9.394/96).</p>
+</div>
+<!-- Item 3 do Stagger: CTA Direto -->
+<div class="drawer-item pt-2">
+<a class="btn-shine group/btn w-full inline-flex items-center justify-center h-10 px-4 rounded-lg bg-primary dark:bg-[#7c3aed] text-white text-xs font-semibold hover:bg-primary-container dark:hover:bg-[#6d28d9] transition-all duration-200 shadow-sm hover:shadow-md hover:shadow-primary/25 hover:-translate-y-0.5" href="#cadastro" onclick="preselectCourse('libras')">
+<span>Garantir Vaga em Libras</span>
+<span class="material-symbols-outlined ml-1.5 text-[16px] transition-transform duration-200 group-hover/btn:translate-x-1">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- CARD 2: ESPANHOL -->
+<div class="course-card course-card-interactive group bg-white dark:bg-[#0f1629] border border-border-subtle dark:border-[#1e293b] rounded-2xl overflow-hidden reveal-on-scroll is-visible" data-category="espanhol" id="card-espanhol">
+<!-- Header Visual -->
+<div class="relative aspect-[16/10] overflow-hidden bg-surface-subtle dark:bg-slate-900">
+<img alt="Estudante conversando ativamente em espanhol com laptop" class="card-img-zoom w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDoMm5OhLKCRrTduNI4y7N6-iI226FaPCEa8-QbO0kLqfWfVyqbed82nH9Nx5SLDk0LcXcCS0TlXXDrgtJ26CkG71th727F4PDFjtVKXJ53QKNYBO-kBNWwKQpXfDrjS5FbKcBN3f3L-MGcNI9UV4GPgoc4EGWrIfSg5C7rAiVUma0Z5xGyXwcTJAqY1XPem_Yb42g5LAdp46WGF1b0yfObAeX50lzt884KqLxRNjrTPVSRJkBfsx9E"/>
+<div class="chip-interactive absolute top-3 left-3 flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white/90 dark:bg-[#0f1629]/90 backdrop-blur-md text-primary dark:text-[#c084fc] font-semibold text-xs border border-white/40 dark:border-purple-400/30 shadow-sm">
+<span class="material-symbols-outlined text-[15px]">public</span>
+                Espanhol
+              </div>
+<div class="absolute bottom-3 right-3 px-2 py-0.5 rounded bg-black/60 backdrop-blur-md text-white text-[11px] font-medium">
+                120 horas
+              </div>
+</div>
+<!-- Corpo Básico -->
+<div class="p-5">
+<div class="flex items-center justify-between text-xs text-text-muted dark:text-slate-400 mb-2">
+<span>Latino &amp; Europeu</span>
+<span class="text-secondary dark:text-teal-400 font-medium">Conversação Viva</span>
+</div>
+<h3 class="font-display font-bold text-lg text-on-surface dark:text-white mb-2 transition-colors duration-200 group-hover:text-primary dark:group-hover:text-[#c084fc]">Espanhol Comunicativo</h3>
+<p class="text-xs text-text-muted dark:text-slate-400 leading-relaxed line-clamp-2">
+                Superação do portunhol com imersão cultural em negócios internacionais, viagens e intercâmbio.
+              </p>
+<button aria-expanded="false" class="mt-4 w-full flex items-center justify-between py-2 px-3 rounded-lg bg-surface-subtle dark:bg-[#151e36] hover:bg-surface-container dark:hover:bg-[#1e293b] text-xs font-semibold text-primary dark:text-[#c084fc] border border-transparent dark:border-[#334155]/60 transition-all duration-200 hover:shadow-sm" onclick="toggleCourseCard('card-espanhol')" type="button">
+<span class="card-toggle-text">Ver detalhes do curso</span>
+<span class="material-symbols-outlined text-[18px] card-toggle-icon">expand_more</span>
+</button>
+</div>
+<!-- Balão Expansível Stagger -->
+<div class="course-drawer">
+<div class="course-drawer-inner">
+<div class="px-5 pb-5 pt-2 border-t border-border-subtle/80 dark:border-[#1e293b] bg-surface-subtle/40 dark:bg-[#0c1222] space-y-4 text-xs text-on-surface-variant dark:text-slate-300">
+<div class="drawer-item">
+<h4 class="font-semibold text-on-surface dark:text-white mb-2 flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-secondary dark:text-teal-400">verified</span>
+                      Conteúdo Programático
+                    </h4>
+<ul class="space-y-1.5 pl-5 list-disc text-text-muted dark:text-slate-400">
+<li>Fonética prática e eliminação de falsos amigos</li>
+<li>Argumentação e expressão espontânea de ideias</li>
+<li>Redação corporativa e negociações globais</li>
+<li>Encontros semanais com nativos da América Latina e Espanha</li>
+</ul>
+</div>
+<div class="drawer-item p-3 rounded-lg bg-surface-card dark:bg-[#151e36] border border-border-subtle dark:border-[#1e293b] space-y-1">
+<p class="font-semibold text-on-surface dark:text-white">Certificação &amp; Foco:</p>
+<p class="text-text-muted dark:text-slate-400">Alinhamento rigoroso ao Quadro Europeu Comum (QERC) e simulados oficiais para DELE e SIELE.</p>
+</div>
+<div class="drawer-item pt-2">
+<a class="btn-shine group/btn w-full inline-flex items-center justify-center h-10 px-4 rounded-lg bg-primary dark:bg-[#7c3aed] text-white text-xs font-semibold hover:bg-primary-container dark:hover:bg-[#6d28d9] transition-all duration-200 shadow-sm hover:shadow-md hover:shadow-primary/25 hover:-translate-y-0.5" href="#cadastro" onclick="preselectCourse('espanhol')">
+<span>Garantir Vaga em Espanhol</span>
+<span class="material-symbols-outlined ml-1.5 text-[16px] transition-transform duration-200 group-hover/btn:translate-x-1">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- CARD 3: INGLÊS -->
+<div class="course-card course-card-interactive group bg-white dark:bg-[#0f1629] border border-border-subtle dark:border-[#1e293b] rounded-2xl overflow-hidden reveal-on-scroll is-visible" data-category="ingles" id="card-ingles">
+<!-- Header Visual -->
+<div class="relative aspect-[16/10] overflow-hidden bg-surface-subtle dark:bg-slate-900">
+<img alt="Profissional com fone praticando conversação em inglês contemporâneo" class="card-img-zoom w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA10TbCzNX8zLAYQG97LEYAt2dWYEXyl7dB9_CC4LciU2uqB7_5Y7BHpm1cHlC5OVDAud5hELJH-x2kP2zmm2TJIywaknO-ho87105MgM9xKqGfNuzZ4YYyiqVkQ2PGKcLM-j8w6UDH4gA7xs6xOYXjvEJxDb1QQCdcysqGnixPxnN3SsM4wL7SC_Ske-hK7XBSUvCPstu7FysPR-o8pyptr7kBex4KCTz73GkR3oV2q8Q00bjY98q6"/>
+<div class="chip-interactive absolute top-3 left-3 flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white/90 dark:bg-[#0f1629]/90 backdrop-blur-md text-primary dark:text-[#c084fc] font-semibold text-xs border border-white/40 dark:border-purple-400/30 shadow-sm">
+<span class="material-symbols-outlined text-[15px]">language</span>
+                Inglês Global
+              </div>
+<div class="absolute bottom-3 right-3 px-2 py-0.5 rounded bg-black/60 backdrop-blur-md text-white text-[11px] font-medium">
+                140 horas
+              </div>
+</div>
+<!-- Corpo Básico -->
+<div class="p-5">
+<div class="flex items-center justify-between text-xs text-text-muted dark:text-slate-400 mb-2">
+<span>Carreiras &amp; Vida</span>
+<span class="text-secondary dark:text-teal-400 font-medium">Foco em Oratória</span>
+</div>
+<h3 class="font-display font-bold text-lg text-on-surface dark:text-white mb-2 transition-colors duration-200 group-hover:text-primary dark:group-hover:text-[#c084fc]">Inglês Contemporâneo</h3>
+<p class="text-xs text-text-muted dark:text-slate-400 leading-relaxed line-clamp-2">
+                Destrave entrevistas de emprego no exterior, viagens e debates sem bloqueios gramaticais.
+              </p>
+<button aria-expanded="false" class="mt-4 w-full flex items-center justify-between py-2 px-3 rounded-lg bg-surface-subtle dark:bg-[#151e36] hover:bg-surface-container dark:hover:bg-[#1e293b] text-xs font-semibold text-primary dark:text-[#c084fc] border border-transparent dark:border-[#334155]/60 transition-all duration-200 hover:shadow-sm" onclick="toggleCourseCard('card-ingles')" type="button">
+<span class="card-toggle-text">Ver detalhes do curso</span>
+<span class="material-symbols-outlined text-[18px] card-toggle-icon">expand_more</span>
+</button>
+</div>
+<!-- Balão Expansível Stagger -->
+<div class="course-drawer">
+<div class="course-drawer-inner">
+<div class="px-5 pb-5 pt-2 border-t border-border-subtle/80 dark:border-[#1e293b] bg-surface-subtle/40 dark:bg-[#0c1222] space-y-4 text-xs text-on-surface-variant dark:text-slate-300">
+<div class="drawer-item">
+<h4 class="font-semibold text-on-surface dark:text-white mb-2 flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-secondary dark:text-teal-400">verified</span>
+                      Conteúdo Programático
+                    </h4>
+<ul class="space-y-1.5 pl-5 list-disc text-text-muted dark:text-slate-400">
+<li>Pronúncia límpida e natural com 'Connected Speech'</li>
+<li>Simulações de reuniões corporativas e apresentações</li>
+<li>Oratória sem vergonha e vocabulário técnico contextual</li>
+<li>Laboratório semanal de pronúncia com gravação guiada</li>
+</ul>
+</div>
+<div class="drawer-item p-3 rounded-lg bg-surface-card dark:bg-[#151e36] border border-border-subtle dark:border-[#1e293b] space-y-1">
+<p class="font-semibold text-on-surface dark:text-white">Certificação &amp; Foco:</p>
+<p class="text-text-muted dark:text-slate-400">Preparação para bandas 7.5+ no IELTS e pontuação superior no TOEFL iBT com simuladores digitais.</p>
+</div>
+<div class="drawer-item pt-2">
+<a class="btn-shine group/btn w-full inline-flex items-center justify-center h-10 px-4 rounded-lg bg-primary dark:bg-[#7c3aed] text-white text-xs font-semibold hover:bg-primary-container dark:hover:bg-[#6d28d9] transition-all duration-200 shadow-sm hover:shadow-md hover:shadow-primary/25 hover:-translate-y-0.5" href="#cadastro" onclick="preselectCourse('ingles')">
+<span>Garantir Vaga em Inglês</span>
+<span class="material-symbols-outlined ml-1.5 text-[16px] transition-transform duration-200 group-hover/btn:translate-x-1">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- =========================================================================================
+         EXPERIÊNCIA INTEGRADA & STORYTELLING DE JORNADA
+         ========================================================================================= -->
+<section class="w-full py-24 bg-surface-canvas dark:bg-[#090d16]" id="experiencia">
+<div class="max-w-[1240px] mx-auto px-6">
+<div class="text-center max-w-2xl mx-auto mb-16 reveal-on-scroll is-visible">
+<span class="text-xs font-semibold uppercase tracking-wider text-secondary dark:text-teal-400">Experiência Integrada</span>
+<h2 class="font-display font-bold text-3xl sm:text-4xl text-on-surface dark:text-white mt-1">Como a LinguaViva Conecta Você</h2>
+<p class="text-sm text-text-muted dark:text-slate-400 mt-2">
+            Uma plataforma desenhada para transformar barreiras linguísticas em fluência viva e oportunidades acadêmicas e profissionais.
+          </p>
+</div>
+<div class="space-y-8">
+<!-- Feature 1: Didática Acessível Radical -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center p-6 sm:p-10 rounded-2xl bg-white dark:bg-[#0f1629] border border-border-subtle dark:border-[#1e293b] shadow-sm hover:shadow-md transition-all duration-300 reveal-on-scroll is-visible">
+<div class="lg:col-span-6 space-y-4">
+<div class="w-10 h-10 rounded-xl bg-surface-container dark:bg-[#1e1b4b] flex items-center justify-center text-primary dark:text-[#a78bfa] font-bold">
+                01
+              </div>
+<h3 class="font-display font-bold text-2xl text-on-surface dark:text-white">Acessibilidade Nativa (WCAG AAA)</h3>
+<p class="text-sm text-text-muted dark:text-slate-300 leading-relaxed">
+                Todas as videoaulas, materiais de apoio e avaliações contam com janelas de tradução em Libras gravadas em estúdio, legendagem bilíngue revisada por humanos e total suporte a leitores de tela modernos.
+              </p>
+<div class="pt-2 flex flex-wrap items-center gap-3 text-xs font-semibold text-secondary dark:text-teal-300">
+<span class="chip-interactive inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary-container/40 dark:bg-[#064e3b]/40 border border-secondary/20 dark:border-teal-500/30">
+<span class="material-symbols-outlined text-[16px]">done</span> Janela de Libras HD
+                </span>
+<span class="chip-interactive inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary-container/40 dark:bg-[#064e3b]/40 border border-secondary/20 dark:border-teal-500/30">
+<span class="material-symbols-outlined text-[16px]">done</span> Alto Contraste
+                </span>
+<span class="chip-interactive inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary-container/40 dark:bg-[#064e3b]/40 border border-secondary/20 dark:border-teal-500/30">
+<span class="material-symbols-outlined text-[16px]">done</span> Sem barreiras
+                </span>
+</div>
+</div>
+<div class="lg:col-span-6 bg-surface-canvas dark:bg-[#090d16] rounded-xl p-5 border border-border-subtle/70 dark:border-[#1e293b]">
+<div class="p-4 rounded-lg bg-white dark:bg-[#151e36] border border-border-subtle dark:border-[#1e293b] shadow-sm flex items-center gap-4 transition-all duration-200 hover:-translate-y-0.5">
+<div class="w-12 h-12 rounded-lg bg-secondary-container dark:bg-[#064e3b] text-on-secondary-container dark:text-[#34d399] flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[24px]">visibility</span>
+</div>
+<div>
+<h4 class="font-semibold text-xs text-on-surface dark:text-white">Didática Visual Direta</h4>
+<p class="text-[11px] text-text-muted dark:text-slate-400 mt-0.5">Sem traduções literais robóticas. Você assimila gramática espacial e fonemas vivos.</p>
+</div>
+</div>
+<div class="mt-3 p-4 rounded-lg bg-white dark:bg-[#151e36] border border-border-subtle dark:border-[#1e293b] shadow-sm flex items-center gap-4 transition-all duration-200 hover:-translate-y-0.5">
+<div class="w-12 h-12 rounded-lg bg-primary-fixed dark:bg-[#2e1065] text-primary dark:text-[#c084fc] flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[24px]">groups</span>
+</div>
+<div>
+<h4 class="font-semibold text-xs text-on-surface dark:text-white">Docência Surda &amp; Ouvinte Bilíngue</h4>
+<p class="text-[11px] text-text-muted dark:text-slate-400 mt-0.5">Intercâmbio contínuo e acolhedor entre instrutores certificados pelo Prolibras.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Feature 2: Duplo Papel - Alunos e Professores -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center p-6 sm:p-10 rounded-2xl bg-white dark:bg-[#0f1629] border border-border-subtle dark:border-[#1e293b] shadow-sm hover:shadow-md transition-all duration-300 reveal-on-scroll is-visible">
+<div class="lg:col-span-6 order-2 lg:order-1 bg-surface-canvas dark:bg-[#090d16] rounded-xl p-5 border border-border-subtle/70 dark:border-[#1e293b]">
+<div class="space-y-3">
+<div class="p-3.5 rounded-lg bg-white dark:bg-[#151e36] border border-border-subtle dark:border-[#1e293b] flex items-start gap-3 transition-all duration-200 hover:-translate-y-0.5">
+<span class="material-symbols-outlined text-secondary dark:text-teal-400 text-[20px] mt-0.5">schedule</span>
+<div>
+<p class="font-semibold text-xs text-on-surface dark:text-white">Horários Flexíveis para Docentes</p>
+<p class="text-[11px] text-text-muted dark:text-slate-400">Monte sua grade de mentorias e receba por hora-aula de forma justa e pontual.</p>
+</div>
+</div>
+<div class="p-3.5 rounded-lg bg-white dark:bg-[#151e36] border border-border-subtle dark:border-[#1e293b] flex items-start gap-3 transition-all duration-200 hover:-translate-y-0.5">
+<span class="material-symbols-outlined text-secondary dark:text-teal-400 text-[20px] mt-0.5">workspace_premium</span>
+<div>
+<p class="font-semibold text-xs text-on-surface dark:text-white">Certificados Reconhecidos Nacionalmente</p>
+<p class="text-[11px] text-text-muted dark:text-slate-400">Horas complementares aceitas em faculdades, concursos públicos e empresas.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="lg:col-span-6 order-1 lg:order-2 space-y-4">
+<div class="w-10 h-10 rounded-xl bg-surface-container dark:bg-[#1e1b4b] flex items-center justify-center text-primary dark:text-[#a78bfa] font-bold">
+                02
+              </div>
+<h3 class="font-display font-bold text-2xl text-on-surface dark:text-white">Ecossistema para Aprender ou Ensinar</h3>
+<p class="text-sm text-text-muted dark:text-slate-300 leading-relaxed">
+                Tanto o aluno que busca destravar sua carreira quanto o professor especialista em busca de liberdade pedagógica encontram um lar acolhedor na LinguaViva.
+              </p>
+<div class="pt-2">
+<a class="group text-xs font-semibold text-primary dark:text-[#c084fc] inline-flex items-center gap-1 hover:text-primary-container dark:hover:text-purple-300 transition-colors" href="#cadastro">
+<span>Faça sua inscrição como aluno ou candidate-se como professor</span>
+<span class="material-symbols-outlined text-[14px] transition-transform duration-200 group-hover:translate-x-1">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- =========================================================================================
+         SEÇÃO MODALIDADES ENXUTA
+         ========================================================================================= -->
+<section class="w-full py-16 bg-surface-card dark:bg-[#0b101e] border-b border-border-subtle dark:border-[#1e293b]" id="modalidades">
+<div class="max-w-[1240px] mx-auto px-6">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10 reveal-on-scroll is-visible">
+<div>
+<span class="text-xs font-semibold uppercase tracking-wider text-primary dark:text-[#c084fc]">Flexibilidade</span>
+<h2 class="font-display font-bold text-2xl sm:text-3xl text-on-surface dark:text-white mt-1">Como Você Prefere Estudar?</h2>
+</div>
+<p class="text-xs text-text-muted dark:text-slate-400 max-w-md">
+            Escolha a modalidade que melhor combina com a sua rotina semanal e objetivos de carreira.
+          </p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+<div class="p-6 rounded-2xl bg-surface-canvas dark:bg-[#0f1629] border border-border-subtle dark:border-[#1e293b] hover:-translate-y-1 transition-all duration-300 shadow-sm reveal-on-scroll is-visible">
+<span class="material-symbols-outlined text-primary dark:text-[#a78bfa] text-[28px] mb-3">laptop_chromebook</span>
+<h3 class="font-display font-bold text-base text-on-surface dark:text-white">100% Online (EAD)</h3>
+<p class="text-xs text-text-muted dark:text-slate-400 mt-2 leading-relaxed">Assista às aulas no seu ritmo com acervo completo gravado em alta definição e suporte a dúvidas.</p>
+<p class="text-[11px] font-semibold text-secondary dark:text-teal-400 mt-4">Acesso vitalício aos módulos</p>
+</div>
+<div class="p-6 rounded-2xl bg-surface-canvas dark:bg-[#0f1629] border-2 border-primary/30 dark:border-purple-500/50 relative hover:-translate-y-1 transition-all duration-300 shadow-sm reveal-on-scroll is-visible">
+<span class="absolute top-4 right-4 px-2 py-0.5 rounded-full bg-primary dark:bg-[#7c3aed] text-white text-[10px] font-semibold">Mais Escolhido</span>
+<span class="material-symbols-outlined text-primary dark:text-[#a78bfa] text-[28px] mb-3">groups</span>
+<h3 class="font-display font-bold text-base text-on-surface dark:text-white">Imersão Síncrona</h3>
+<p class="text-xs text-text-muted dark:text-slate-400 mt-2 leading-relaxed">Aulas ao vivo em turmas de até 8 alunos com professores e intérpretes em encontros interativos semanais.</p>
+<p class="text-[11px] font-semibold text-secondary dark:text-teal-400 mt-4">Fluência comunicativa acelerada</p>
+</div>
+<div class="p-6 rounded-2xl bg-surface-canvas dark:bg-[#0f1629] border border-border-subtle dark:border-[#1e293b] hover:-translate-y-1 transition-all duration-300 shadow-sm reveal-on-scroll is-visible">
+<span class="material-symbols-outlined text-primary dark:text-[#a78bfa] text-[28px] mb-3">hub</span>
+<h3 class="font-display font-bold text-base text-on-surface dark:text-white">Modelo Híbrido</h3>
+<p class="text-xs text-text-muted dark:text-slate-400 mt-2 leading-relaxed">Equilíbrio entre teoria sob demanda na plataforma e workshops de prática presencial e virtual periódicos.</p>
+<p class="text-[11px] font-semibold text-secondary dark:text-teal-400 mt-4">Networking e eventos culturais</p>
+</div>
+</div>
+</div>
+</section>
+<!-- =========================================================================================
+         PLANOS & INVESTIMENTO
+         ========================================================================================= -->
+<section class="w-full py-20 bg-surface-canvas dark:bg-[#090d16]" id="planos">
+<div class="max-w-[1240px] mx-auto px-6">
+<div class="text-center max-w-2xl mx-auto mb-14 reveal-on-scroll is-visible">
+<span class="text-xs font-semibold uppercase tracking-wider text-primary dark:text-[#c084fc]">Preços Transparentes</span>
+<h2 class="font-display font-bold text-3xl sm:text-4xl text-on-surface dark:text-white mt-1">Investimento Simples e Justo</h2>
+<p class="text-sm text-text-muted dark:text-slate-400 mt-2">Sem taxas de matrícula, multas de cancelamento ou letras miúdas.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
+<!-- Plano 1 -->
+<div class="p-6 rounded-2xl bg-white dark:bg-[#0f1629] border border-border-subtle dark:border-[#1e293b] flex flex-col justify-between hover:-translate-y-1.5 transition-all duration-300 shadow-sm reveal-on-scroll is-visible">
+<div>
+<h3 class="font-display font-bold text-lg text-on-surface dark:text-white">Essencial</h3>
+<p class="text-xs text-text-muted dark:text-slate-400 mt-1">Flexibilidade no próprio ritmo.</p>
+<div class="my-5">
+<span class="font-display font-extrabold text-3xl text-on-surface dark:text-white">R$ 129</span>
+<span class="text-xs text-text-muted dark:text-slate-400">/mês</span>
+</div>
+<ul class="space-y-2.5 text-xs text-text-muted dark:text-slate-400">
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-secondary dark:text-teal-400 text-[16px]">check</span> Acesso 24/7 a videoaulas com Libras</li>
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-secondary dark:text-teal-400 text-[16px]">check</span> Apostilas digitais inclusas</li>
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-secondary dark:text-teal-400 text-[16px]">check</span> Comunidade de dúvidas monitorada</li>
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-secondary dark:text-teal-400 text-[16px]">check</span> Certificado reconhecido</li>
+</ul>
+</div>
+<a class="mt-8 w-full h-10 rounded-xl bg-surface-subtle dark:bg-[#151e36] hover:bg-surface-container dark:hover:bg-[#1e293b] text-xs font-semibold text-on-surface dark:text-white flex items-center justify-center transition-all duration-200 hover:-translate-y-0.5 shadow-sm" href="#cadastro">
+              Escolher Essencial
+            </a>
+</div>
+<!-- Plano 2: Destaque -->
+<div class="p-6 rounded-2xl bg-white dark:bg-[#0f1629] border-2 border-primary dark:border-[#7c3aed] ring-4 ring-primary/5 dark:ring-purple-500/20 flex flex-col justify-between relative hover:-translate-y-1.5 transition-all duration-300 shadow-md reveal-on-scroll is-visible">
+<span class="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-0.5 rounded-full bg-primary dark:bg-[#7c3aed] text-white text-[11px] font-semibold">Recomendado</span>
+<div>
+<h3 class="font-display font-bold text-lg text-on-surface dark:text-white">Conexão Ativa</h3>
+<p class="text-xs text-text-muted dark:text-slate-400 mt-1">Aulas ao vivo e clubes de conversação.</p>
+<div class="my-5">
+<span class="font-display font-extrabold text-3xl text-primary dark:text-[#c084fc]">R$ 219</span>
+<span class="text-xs text-text-muted dark:text-slate-400">/mês</span>
+</div>
+<ul class="space-y-2.5 text-xs text-on-surface dark:text-slate-200 font-medium">
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-secondary dark:text-teal-400 text-[16px]">check_circle</span> 4h semanais de encontros ao vivo</li>
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-secondary dark:text-teal-400 text-[16px]">check_circle</span> Turmas reduzidas com até 8 pessoas</li>
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-secondary dark:text-teal-400 text-[16px]">check_circle</span> Clubes de conversação livres</li>
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-secondary dark:text-teal-400 text-[16px]">check_circle</span> Plantão direto com docentes nativos</li>
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-secondary dark:text-teal-400 text-[16px]">check_circle</span> Avaliação individual de progresso</li>
+</ul>
+</div>
+<a class="btn-shine mt-8 w-full h-10 rounded-xl bg-primary dark:bg-[#7c3aed] hover:bg-primary-container dark:hover:bg-[#6d28d9] text-white text-xs font-semibold flex items-center justify-center transition-all duration-200 shadow-sm hover:shadow-md hover:shadow-primary/30 hover:-translate-y-0.5" href="#cadastro">
+              Começar com Conexão Ativa
+            </a>
+</div>
+<!-- Plano 3 -->
+<div class="p-6 rounded-2xl bg-white dark:bg-[#0f1629] border border-border-subtle dark:border-[#1e293b] flex flex-col justify-between hover:-translate-y-1.5 transition-all duration-300 shadow-sm reveal-on-scroll is-visible">
+<div>
+<h3 class="font-display font-bold text-lg text-on-surface dark:text-white">Imersão Total</h3>
+<p class="text-xs text-text-muted dark:text-slate-400 mt-1">Mentoria individual e foco em certificações.</p>
+<div class="my-5">
+<span class="font-display font-extrabold text-3xl text-on-surface dark:text-white">R$ 389</span>
+<span class="text-xs text-text-muted dark:text-slate-400">/mês</span>
+</div>
+<ul class="space-y-2.5 text-xs text-text-muted dark:text-slate-400">
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-secondary dark:text-teal-400 text-[16px]">check</span> Mentoria 1 a 1 quinzenal</li>
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-secondary dark:text-teal-400 text-[16px]">check</span> Treinamento intensivo Prolibras/DELE</li>
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-secondary dark:text-teal-400 text-[16px]">check</span> Revisão de currículo e oratória</li>
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-secondary dark:text-teal-400 text-[16px]">check</span> Acesso total irrestrito</li>
+</ul>
+</div>
+<a class="mt-8 w-full h-10 rounded-xl bg-surface-subtle dark:bg-[#151e36] hover:bg-surface-container dark:hover:bg-[#1e293b] text-xs font-semibold text-on-surface dark:text-white flex items-center justify-center transition-all duration-200 hover:-translate-y-0.5 shadow-sm" href="#cadastro">
+              Garantir Vaga Imersão
+            </a>
+</div>
+</div>
+</div>
+</section>
+<!-- =========================================================================================
+         ÁREA DESIGNADA DE CADASTRO UNIFICADA (ALUNO & PROFESSOR)
+         ========================================================================================= -->
+<section class="w-full py-20 bg-white dark:bg-[#0b101e] border-t border-border-subtle dark:border-[#1e293b]" id="cadastro">
+<div class="max-w-[760px] mx-auto px-6">
+<div class="text-center mb-10 reveal-on-scroll is-visible">
+<span class="text-xs font-semibold uppercase tracking-wider text-primary dark:text-[#c084fc]">Inscrição &amp; Candidatura</span>
+<h2 class="font-display font-bold text-3xl text-on-surface dark:text-white mt-1">Inicie sua Jornada na LinguaViva</h2>
+<p class="text-sm text-text-muted dark:text-slate-400 mt-2">
+            Escolha seu objetivo abaixo. Nosso processo é 100% acessível, rápido e acolhedor.
+          </p>
+<!-- Toggle de Perfil Inspirado no Labelbox -->
+<div class="mt-6 inline-flex p-1 rounded-xl bg-surface-subtle dark:bg-[#151e36] border border-border-subtle dark:border-[#1e293b] shadow-sm">
+<button class="px-5 py-2 rounded-lg text-xs font-semibold bg-white dark:bg-[#1e293b] text-on-surface dark:text-white shadow-sm transition-all duration-200 flex items-center gap-2" id="toggle-btn-aluno" onclick="setUnifiedFormRole('aluno')" type="button">
+<span class="material-symbols-outlined text-[16px] text-primary dark:text-[#a78bfa]">school</span>
+              Quero Aprender (Aluno)
+            </button>
+<button class="px-5 py-2 rounded-lg text-xs font-semibold text-text-muted dark:text-slate-400 hover:text-on-surface dark:hover:text-white transition-all duration-200 flex items-center gap-2" id="toggle-btn-docente" onclick="setUnifiedFormRole('docente')" type="button">
+<span class="material-symbols-outlined text-[16px]">co_present</span>
+              Quero Ensinar (Professor)
+            </button>
+</div>
+</div>
+<!-- Formulário Unificado com Visual Editorial -->
+<div class="p-6 sm:p-8 rounded-2xl bg-surface-canvas dark:bg-[#0f1629] border border-border-subtle dark:border-[#1e293b] shadow-sm reveal-on-scroll is-visible">
+<form class="space-y-4" id="main-registration-form" onsubmit="handleRegistrationSubmit(event)">
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div>
+<label class="block text-xs font-semibold text-on-surface dark:text-slate-200 mb-1" for="form-nome">Nome Completo *</label>
+<input class="w-full h-11 px-3.5 rounded-lg border border-border-subtle dark:border-[#334155] bg-white dark:bg-[#151e36] text-xs text-on-surface dark:text-white focus:outline-none focus:ring-2 focus:ring-focus-ring focus:border-transparent transition-all" id="form-nome" name="nome" placeholder="Ex: Mariana Silva Costa" required="" type="text"/>
+</div>
+<div>
+<label class="block text-xs font-semibold text-on-surface dark:text-slate-200 mb-1" for="form-email">E-mail de Contato *</label>
+<input class="w-full h-11 px-3.5 rounded-lg border border-border-subtle dark:border-[#334155] bg-white dark:bg-[#151e36] text-xs text-on-surface dark:text-white focus:outline-none focus:ring-2 focus:ring-focus-ring focus:border-transparent transition-all" id="form-email" name="email" placeholder="mariana@exemplo.com.br" required="" type="email"/>
+</div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div>
+<label class="block text-xs font-semibold text-on-surface dark:text-slate-200 mb-1" for="form-telefone">WhatsApp / Telefone *</label>
+<input class="w-full h-11 px-3.5 rounded-lg border border-border-subtle dark:border-[#334155] bg-white dark:bg-[#151e36] text-xs text-on-surface dark:text-white focus:outline-none focus:ring-2 focus:ring-focus-ring focus:border-transparent transition-all" id="form-telefone" name="telefone" placeholder="(11) 98765-4321" required="" type="tel"/>
+</div>
+<div>
+<label class="block text-xs font-semibold text-on-surface dark:text-slate-200 mb-1" for="form-idioma" id="label-idioma">Idioma de Interesse *</label>
+<select class="w-full h-11 px-3.5 rounded-lg border border-border-subtle dark:border-[#334155] bg-white dark:bg-[#151e36] text-xs text-on-surface dark:text-white focus:outline-none focus:ring-2 focus:ring-focus-ring focus:border-transparent transition-all" id="form-idioma" name="idioma" required="">
+<option disabled="" selected="" value="">Selecione uma opção</option>
+<option value="libras">Libras (Língua Brasileira de Sinais)</option>
+<option value="espanhol">Espanhol (Latino &amp; Europeu)</option>
+<option value="ingles">Inglês Global</option>
+<option value="multiplo">Mais de um idioma</option>
+</select>
+</div>
+</div>
+<!-- Campos Aluno -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4" id="fields-aluno-container">
+<div>
+<label class="block text-xs font-semibold text-on-surface dark:text-slate-200 mb-1" for="form-modalidade">Modalidade Preferida</label>
+<select class="w-full h-11 px-3.5 rounded-lg border border-border-subtle dark:border-[#334155] bg-white dark:bg-[#151e36] text-xs text-on-surface dark:text-white focus:outline-none focus:ring-2 focus:ring-focus-ring focus:border-transparent transition-all" id="form-modalidade" name="modalidade">
+<option value="imersao">Imersão Síncrona (Aulas ao vivo)</option>
+<option value="online">100% Online (EAD)</option>
+<option value="hibrido">Híbrido (Online + Prática)</option>
+</select>
+</div>
+<div>
+<label class="block text-xs font-semibold text-on-surface dark:text-slate-200 mb-1" for="form-nivel">Nível Estimado Atual</label>
+<select class="w-full h-11 px-3.5 rounded-lg border border-border-subtle dark:border-[#334155] bg-white dark:bg-[#151e36] text-xs text-on-surface dark:text-white focus:outline-none focus:ring-2 focus:ring-focus-ring focus:border-transparent transition-all" id="form-nivel" name="nivel">
+<option value="zero">Começar do Zero (Iniciante)</option>
+<option value="basico">Básico (conheço termos simples)</option>
+<option value="intermediario">Intermediário</option>
+<option value="avancado">Avançado / Preparatório</option>
+</select>
+</div>
+</div>
+<!-- Campos Professor (Oculto Inicialmente) -->
+<div class="hidden grid grid-cols-1 sm:grid-cols-2 gap-4" id="fields-docente-container">
+<div>
+<label class="block text-xs font-semibold text-on-surface dark:text-slate-200 mb-1" for="form-titulacao">Formação / Titulação *</label>
+<select class="w-full h-11 px-3.5 rounded-lg border border-border-subtle dark:border-[#334155] bg-white dark:bg-[#151e36] text-xs text-on-surface dark:text-white focus:outline-none focus:ring-2 focus:ring-focus-ring focus:border-transparent transition-all" id="form-titulacao" name="titulacao">
+<option value="letras">Graduação em Letras / Pedagogia</option>
+<option value="prolibras">Certificação Prolibras / CAS</option>
+<option value="nativo">Falante Nativo com Didática</option>
+<option value="pos">Pós-Graduação / Especialização</option>
+</select>
+</div>
+<div>
+<label class="block text-xs font-semibold text-on-surface dark:text-slate-200 mb-1" for="form-disponibilidade">Disponibilidade Semanal</label>
+<select class="w-full h-11 px-3.5 rounded-lg border border-border-subtle dark:border-[#334155] bg-white dark:bg-[#151e36] text-xs text-on-surface dark:text-white focus:outline-none focus:ring-2 focus:ring-focus-ring focus:border-transparent transition-all" id="form-disponibilidade" name="disponibilidade">
+<option value="parcial_noite">Noites (18h às 22h)</option>
+<option value="parcial_dia">Manhãs / Tardes</option>
+<option value="sabados">Sábados e Workshops</option>
+<option value="integral">Flexibilidade Ampla</option>
+</select>
+</div>
+</div>
+<!-- Acessibilidade Checkbox -->
+<div class="p-3.5 rounded-xl bg-white dark:bg-[#151e36] border border-border-subtle dark:border-[#1e293b] flex items-start gap-3 transition-colors">
+<input class="mt-0.5 w-4 h-4 rounded text-primary focus:ring-focus-ring border-border-subtle dark:border-[#334155] cursor-pointer" id="form-acessibilidade" name="acessibilidade" type="checkbox"/>
+<label class="text-xs text-on-surface dark:text-slate-200 cursor-pointer select-none" for="form-acessibilidade">
+<span class="font-semibold block">Necessito de suporte especial de acessibilidade</span>
+<span class="text-text-muted dark:text-slate-400 text-[11px]">Ex: atendimento prioritário em Libras por chamada de vídeo ou suporte para leitor de tela.</span>
+</label>
+</div>
+<!-- Botão de Ação -->
+<div class="pt-2">
+<button class="btn-shine group w-full h-12 rounded-xl bg-primary dark:bg-[#7c3aed] hover:bg-primary-container dark:hover:bg-[#6d28d9] text-white text-xs font-semibold transition-all duration-200 shadow-sm hover:shadow-md hover:shadow-primary/25 hover:-translate-y-0.5 flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-focus-ring" id="form-submit-button" type="submit">
+<span class="material-symbols-outlined text-[18px] transition-transform duration-200 group-hover:scale-110">how_to_reg</span>
+<span id="form-submit-label">Concluir Inscrição de Aluno</span>
+</button>
+<p class="text-[11px] text-text-muted dark:text-slate-400 text-center mt-2">
+                Seus dados estão seguros e protegidos de acordo com a LGPD. Resposta em até 24 horas.
+              </p>
+</div>
+<!-- Alerta de Sucesso -->
+<div class="hidden p-4 rounded-xl bg-secondary-container/50 dark:bg-[#064e3b]/50 border border-secondary/20 dark:border-teal-500/40 text-on-secondary-container dark:text-teal-200 text-xs text-center font-medium" id="form-success-alert">
+              Dados enviados com sucesso! Nossa coordenação entrará em contato via WhatsApp e e-mail.
+            </div>
+</form>
+</div>
+</div>
+</section>
+<!-- =========================================================================================
+         PERGUNTAS FREQUENTES (FAQ)
+         ========================================================================================= -->
+<section class="w-full py-16 bg-surface-canvas dark:bg-[#090d16]" id="duvidas">
+<div class="max-w-[760px] mx-auto px-6">
+<div class="text-center mb-10 reveal-on-scroll is-visible">
+<span class="text-xs font-semibold uppercase tracking-wider text-primary dark:text-[#c084fc]">Tire Suas Dúvidas</span>
+<h2 class="font-display font-bold text-2xl sm:text-3xl text-on-surface dark:text-white mt-1">Perguntas Frequentes</h2>
+</div>
+<div class="space-y-3">
+<div class="rounded-xl bg-white dark:bg-[#0f1629] border border-border-subtle dark:border-[#1e293b] overflow-hidden transition-all duration-200">
+<button class="w-full p-4 flex items-center justify-between text-left text-xs sm:text-sm font-semibold text-on-surface dark:text-white hover:text-primary dark:hover:text-[#c084fc] transition-colors duration-200" onclick="toggleFaqAccordion(1)">
+<span>Como funcionam as aulas com instrutores surdos e ouvintes?</span>
+<span class="material-symbols-outlined text-[18px] text-text-muted dark:text-slate-400 transition-transform duration-300" id="faq-chevron-1">expand_more</span>
+</button>
+<div class="hidden px-4 pb-4 text-xs text-text-muted dark:text-slate-400 leading-relaxed" id="faq-body-1">
+              Adotamos a metodologia bilíngue em dupla docência: os alunos têm contato direto com instrutores surdos nativos para imersão gestual autêntica e apoio de intérpretes qualificados nos momentos de alinhamento conceitual.
+            </div>
+</div>
+<div class="rounded-xl bg-white dark:bg-[#0f1629] border border-border-subtle dark:border-[#1e293b] overflow-hidden transition-all duration-200">
+<button class="w-full p-4 flex items-center justify-between text-left text-xs sm:text-sm font-semibold text-on-surface dark:text-white hover:text-primary dark:hover:text-[#c084fc] transition-colors duration-200" onclick="toggleFaqAccordion(2)">
+<span>Os certificados emitidos são válidos para concursos e faculdades?</span>
+<span class="material-symbols-outlined text-[18px] text-text-muted dark:text-slate-400 transition-transform duration-300" id="faq-chevron-2">expand_more</span>
+</button>
+<div class="hidden px-4 pb-4 text-xs text-text-muted dark:text-slate-400 leading-relaxed" id="faq-body-2">
+              Sim. Nossos cursos livres de formação continuada são amparados pela Lei de Diretrizes e Bases da Educação Nacional (LDB nº 9.394/96). Cada certificado possui código de verificação e carga horária discriminada.
+            </div>
+</div>
+<div class="rounded-xl bg-white dark:bg-[#0f1629] border border-border-subtle dark:border-[#1e293b] overflow-hidden transition-all duration-200">
+<button class="w-full p-4 flex items-center justify-between text-left text-xs sm:text-sm font-semibold text-on-surface dark:text-white hover:text-primary dark:hover:text-[#c084fc] transition-colors duration-200" onclick="toggleFaqAccordion(3)">
+<span>Como funciona o atendimento de suporte diretamente em Libras?</span>
+<span class="material-symbols-outlined text-[18px] text-text-muted dark:text-slate-400 transition-transform duration-300" id="faq-chevron-3">expand_more</span>
+</button>
+<div class="hidden px-4 pb-4 text-xs text-text-muted dark:text-slate-400 leading-relaxed" id="faq-body-3">
+              Disponibilizamos um canal contínuo de vídeo-chamada com intérpretes em plantão. Basta acionar a central na barra inferior ou informar no cadastro para atendimento preferencial.
+            </div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- =========================================================================================
+       FOOTER
+       ========================================================================================= -->
+<footer class="w-full bg-white dark:bg-[#060911] border-t border-border-subtle dark:border-[#1e293b] py-12 text-xs text-text-muted dark:text-slate-400">
+<div class="max-w-[1240px] mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+<div class="flex items-center gap-2">
+<span class="font-display font-bold text-sm text-primary dark:text-[#c084fc]">LinguaViva</span>
+<span>•</span>
+<span>Educação Multilíngue Acessível WCAG AAA</span>
+</div>
+<div class="flex items-center gap-4">
+<a class="hover:text-primary dark:hover:text-white transition-colors duration-200" href="#cursos">Cursos</a>
+<a class="hover:text-primary dark:hover:text-white transition-colors duration-200" href="#planos">Planos</a>
+<a class="hover:text-primary dark:hover:text-white transition-colors duration-200" href="#cadastro">Cadastro</a>
+<a class="hover:text-primary dark:hover:text-white transition-colors duration-200" href="mailto:contato@linguaviva.edu.br">Suporte</a>
+</div>
+<p>© 2025 LinguaViva Educação Ltda.</p>
+</div>
+</footer>
+<!-- Widget de Acessibilidade Flutuante -->
+<aside aria-label="Acessibilidade Libras" class="fixed bottom-5 right-5 z-40">
+<button class="flex items-center gap-2 px-3 py-2 rounded-full bg-white dark:bg-[#0f1629] border border-border-subtle dark:border-[#1e293b] shadow-lg hover:shadow-xl text-on-surface dark:text-white text-xs font-semibold transition-all duration-200 hover:-translate-y-0.5 hover:border-secondary/40" onclick="alert('Central de Libras: Conectando com atendimento bilíngue por vídeo...')" title="Atendimento e suporte em Libras" type="button">
+<span class="w-2.5 h-2.5 rounded-full bg-secondary dark:bg-teal-400 animate-pulse"></span>
+<span class="material-symbols-outlined text-[18px] text-secondary dark:text-teal-400">sign_language</span>
+<span class="hidden sm:inline">Central Libras</span>
+</button>
+</aside>
+<!-- =========================================================================================
+       JAVASCRIPT:
+       1. THEME SWITCHER DINÂMICO (DARK MODE <-> BRANCO/LIGHT MODE) COM PERSISTÊNCIA LOCAL
+       2. CONTROLE FLUIDO DE BALÕES EXPANSÍVEIS COM STAGGER & BEZIER SUAVE
+       3. FILTRO DE CURSOS E ROLE SWITCHER NO CADASTRO
+       ========================================================================================= -->
+<script>
+    // -------------------------------------------------------------
+    // 1. THEME SWITCHER (DARK MODE <-> LIGHT MODE "BRANCO")
+    // -------------------------------------------------------------
+    function toggleThemeMode() {
+      const htmlEl = document.documentElement;
+      const isDark = htmlEl.classList.contains('dark');
+      
+      if (isDark) {
+        htmlEl.classList.remove('dark');
+        localStorage.setItem('linguaviva_theme', 'light');
+      } else {
+        htmlEl.classList.add('dark');
+        localStorage.setItem('linguaviva_theme', 'dark');
+      }
+    }
+
+    // Inicialização do tema preferido ou padrão (inicia com dark mode preservando a identidade original)
+    (function initTheme() {
+      const savedTheme = localStorage.getItem('linguaviva_theme');
+      if (savedTheme === 'light') {
+        document.documentElement.classList.remove('dark');
+      } else {
+        document.documentElement.classList.add('dark');
+      }
+    })();
+
+    // -------------------------------------------------------------
+    // 2. SCROLL REVEAL OBSERVER (INTERSECTION OBSERVER)
+    // -------------------------------------------------------------
+    document.addEventListener('DOMContentLoaded', () => {
+      const revealElements = document.querySelectorAll('.reveal-on-scroll');
+      
+      const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            obs.unobserve(entry.target);
+          }
+        });
+      }, {
+        threshold: 0.12,
+        rootMargin: '0px 0px -40px 0px'
+      });
+
+      revealElements.forEach(el => observer.observe(el));
+    });
+
+    // -------------------------------------------------------------
+    // 3. CARDS / BALÕES EXPANSÍVEIS COM ANIMAÇÃO FLUIDA & STAGGER
+    // -------------------------------------------------------------
+    function toggleCourseCard(cardId) {
+      const card = document.getElementById(cardId);
+      if (!card) return;
+
+      const isExpanded = card.classList.contains('expanded');
+      const toggleBtn = card.querySelector('button');
+      const toggleText = card.querySelector('.card-toggle-text');
+      const toggleIcon = card.querySelector('.card-toggle-icon');
+
+      if (isExpanded) {
+        card.classList.remove('expanded');
+        if (toggleText) toggleText.textContent = 'Ver detalhes do curso';
+        if (toggleIcon) toggleIcon.style.transform = 'rotate(0deg)';
+        if (toggleBtn) toggleBtn.setAttribute('aria-expanded', 'false');
+      } else {
+        card.classList.add('expanded');
+        if (toggleText) toggleText.textContent = 'Ocultar detalhes';
+        if (toggleIcon) toggleIcon.style.transform = 'rotate(180deg)';
+        if (toggleBtn) toggleBtn.setAttribute('aria-expanded', 'true');
+      }
+    }
+
+    // -------------------------------------------------------------
+    // 4. FILTRAGEM DINÂMICA DE CURSOS
+    // -------------------------------------------------------------
+    function filterCourses(category) {
+      const buttons = document.querySelectorAll('.course-filter-btn');
+      buttons.forEach(btn => {
+        if (btn.getAttribute('data-filter') === category) {
+          btn.classList.add('bg-white', 'dark:bg-[#1e293b]', 'text-on-surface', 'dark:text-white', 'shadow-sm');
+          btn.classList.remove('text-text-muted', 'dark:text-slate-400');
+        } else {
+          btn.classList.remove('bg-white', 'dark:bg-[#1e293b]', 'text-on-surface', 'dark:text-white', 'shadow-sm');
+          btn.classList.add('text-text-muted', 'dark:text-slate-400');
+        }
+      });
+
+      const cards = document.querySelectorAll('.course-card');
+      cards.forEach(card => {
+        const cardCat = card.getAttribute('data-category');
+        if (category === 'all' || cardCat === category) {
+          card.classList.remove('hidden');
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+    }
+
+    // Pré-selecionar idioma no formulário ao clicar em um card
+    function preselectCourse(lang) {
+      const select = document.getElementById('form-idioma');
+      if (select) {
+        select.value = lang;
+      }
+    }
+
+    // -------------------------------------------------------------
+    // 5. FORMULÁRIO UNIFICADO: ALUNO VS DOCENTE
+    // -------------------------------------------------------------
+    let currentRole = 'aluno';
+
+    function setUnifiedFormRole(role) {
+      currentRole = role;
+      const btnAluno = document.getElementById('toggle-btn-aluno');
+      const btnDocente = document.getElementById('toggle-btn-docente');
+      const fieldsAluno = document.getElementById('fields-aluno-container');
+      const fieldsDocente = document.getElementById('fields-docente-container');
+      const submitLabel = document.getElementById('form-submit-label');
+      const labelIdioma = document.getElementById('label-idioma');
+
+      if (role === 'aluno') {
+        btnAluno.classList.add('bg-white', 'dark:bg-[#1e293b]', 'text-on-surface', 'dark:text-white', 'shadow-sm');
+        btnAluno.classList.remove('text-text-muted', 'dark:text-slate-400');
+        btnDocente.classList.remove('bg-white', 'dark:bg-[#1e293b]', 'text-on-surface', 'dark:text-white', 'shadow-sm');
+        btnDocente.classList.add('text-text-muted', 'dark:text-slate-400');
+
+        fieldsAluno.classList.remove('hidden');
+        fieldsDocente.classList.add('hidden');
+
+        submitLabel.textContent = 'Concluir Inscrição de Aluno';
+        labelIdioma.textContent = 'Idioma de Interesse *';
+      } else {
+        btnDocente.classList.add('bg-white', 'dark:bg-[#1e293b]', 'text-on-surface', 'dark:text-white', 'shadow-sm');
+        btnDocente.classList.remove('text-text-muted', 'dark:text-slate-400');
+        btnAluno.classList.remove('bg-white', 'dark:bg-[#1e293b]', 'text-on-surface', 'dark:text-white', 'shadow-sm');
+        btnAluno.classList.add('text-text-muted', 'dark:text-slate-400');
+
+        fieldsAluno.classList.add('hidden');
+        fieldsDocente.classList.remove('hidden');
+
+        submitLabel.textContent = 'Enviar Candidatura Docente';
+        labelIdioma.textContent = 'Idioma que Deseja Ministrar *';
+      }
+    }
+
+    function handleRegistrationSubmit(event) {
+      event.preventDefault();
+      const submitBtn = document.getElementById('form-submit-button');
+      const successAlert = document.getElementById('form-success-alert');
+
+      submitBtn.disabled = true;
+      submitBtn.classList.add('opacity-75');
+
+      setTimeout(() => {
+        submitBtn.disabled = false;
+        submitBtn.classList.remove('opacity-75');
+        successAlert.classList.remove('hidden');
+        event.target.reset();
+        setUnifiedFormRole(currentRole);
+      }, 600);
+    }
+
+    // -------------------------------------------------------------
+    // 6. ACCORDION FAQ
+    // -------------------------------------------------------------
+    function toggleFaqAccordion(idx) {
+      const body = document.getElementById('faq-body-' + idx);
+      const chevron = document.getElementById('faq-chevron-' + idx);
+
+      if (!body) return;
+      const isHidden = body.classList.contains('hidden');
+
+      for (let i = 1; i <= 3; i++) {
+        const b = document.getElementById('faq-body-' + i);
+        const c = document.getElementById('faq-chevron-' + i);
+        if (b) b.classList.add('hidden');
+        if (c) c.style.transform = 'rotate(0deg)';
+      }
+
+      if (isHidden) {
+        body.classList.remove('hidden');
+        if (chevron) chevron.style.transform = 'rotate(180deg)';
+      }
+    }
+  </script>
+</body></html>
